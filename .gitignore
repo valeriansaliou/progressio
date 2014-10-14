@@ -1,1 +1,13 @@
+# Excluded files
 .DS_Store
+Thumbs.db
+npm-debug.log
+
+# Excluded folders
+bower_components/
+node_modules/
+.sass-cache/
+
+# Excluded subfiles
+#lib/*
+build/*

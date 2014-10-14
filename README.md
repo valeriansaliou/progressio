@@ -19,8 +19,9 @@ You can test our online demo of Progression there: https://demo.hakuma.holdings/
 
 Progressio depends on the following libraries:
 
-* jQuery
-* jQuery Timers
+* [jQuery](https://github.com/jquery/jquery)
+* [jQuery Timers](https://github.com/patryk/jquery.timers)
+* [Console.js](https://github.com/valeriansaliou/console.js)
 
 If you don't have them, you can build the library using the GruntJS `build:with_libs` task.
 
@@ -37,22 +38,46 @@ Once done, you can retrieve the progressio.js and progressio.css files in the bu
 
 ## Usage
 
-Using Progressio is straightforward.
+Using Progressio is straightforward. Here's how to use it.
 
 ### 1. Include library files
 
-TODO.
+Load Progression source files and its dependencies in the head of your website pages. Please add it globally to your website (in your base template - provided you're using a template system).
+
+```html
+<!-- BEGIN Dependencies -->
+<script src="./libs/javascripts/jquery.js" type="text/javascript" data-scope="common"></script>
+<script src="./libs/javascripts/jquery.timers.js" type="text/javascript" data-scope="common"></script>
+<script src="./libs/javascripts/console.js" type="text/javascript" data-scope="common"></script>
+<!-- END Dependencies -->
+
+<!-- BEGIN Progressio -->
+<script src="./libs/javascripts/progressio.js" type="text/javascript" data-scope="common"></script>
+<link rel="stylesheet" href="./libs/stylesheets/progressio.css" type="text/css" data-scope="common">
+<!-- END Progressio -->
+```
 
 
 ### 2. Initiliaze library configuration
 
 TODO.
 
+```javascript
+// TODO
+```
+
 
 ### 3. Tag links to be excluded
 
 TODO.
 
+```html
+```
+
+
 ### 4. Tag common dependencies (stylesheets + scripts)
 
 TODO.
+
+```html
+```
