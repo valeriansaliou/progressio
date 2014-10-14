@@ -1,0 +1,13 @@
+{
+  "name" : "progressio",
+
+  "dependencies" : {
+    "jquery": "latest",
+    "jquery.timers": "patryk/jquery.timers",
+    "console": "valeriansaliou/console.js"
+  },
+
+  "install" : {
+    "path" : "lib/"
+  }
+}

@@ -7,6 +7,8 @@ This library was originally built for [Waaave](https://waaave.com/). You can see
 
 Progressio is published under the terms of the Mozilla Public License v2.0 (MPL v2.0) license - see the LICENSE.md file.
 
+[![build status](https://ci.hakuma.holdings/projects/57/status.png?ref=master)](https://ci.hakuma.holdings/projects/57?ref=master)
+
 
 ## Demo
 
