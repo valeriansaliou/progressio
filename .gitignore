@@ -9,5 +9,5 @@ node_modules/
 .sass-cache/
 
 # Excluded subfiles
-#lib/*
+lib/*
 build/*
