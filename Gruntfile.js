@@ -3,6 +3,7 @@
  * Automated tasks (uses GruntJS)
  *
  * Copyright 2014, Valérian Saliou
+ * URL: https://github.com/valeriansaliou/progressio
  * Author: Valérian Saliou https://valeriansaliou.name/
  */
 

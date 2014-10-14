@@ -1,6 +1,8 @@
 ###
 Progressio
-Authors: Valérian Saliou
+
+URL: https://github.com/valeriansaliou/progressio
+Author: Valérian Saliou
 Copyright: 2014, Valérian Saliou
 ###
 
@@ -85,7 +87,7 @@ class ProgressioPage
             return return_value
 
         # Lock down further async load events on those links...
-        eligible_links.attr 'data-async', 'active'
+        eligible_links.attr 'data-progressio-async', 'active'
 
         if eligible_links_count
           Console.debug(
@@ -145,8 +147,8 @@ class ProgressioPage
 
       return @_document_sel.find(
         'a[href]:not([target="_blank"], ' +\
-        '[data-async="disabled"], ' +\
-        '[data-async="active"])'
+        '[data-progressio-async="disabled"], ' +\
+        '[data-progressio-async="active"])'
       ).filter ->
         return $(this).attr('href').match r_match
     catch error
@@ -199,10 +201,10 @@ class ProgressioPage
           # Callback functions
           callback_counter = 0
           old_namespaced_script_sel = @_document_sel.find(
-            'script:not([data-scope="common"])'
+            'script:not([data-progressio-scope="common"])'
           )
           old_namespaced_stylesheet_sel = @_document_sel.find(
-            'link[rel="stylesheet"]:not([data-scope="common"])'
+            'link[rel="stylesheet"]:not([data-progressio-scope="common"])'
           )
 
           cb_cleanup_fn = ->
@@ -276,12 +278,12 @@ class ProgressioPage
 
           # Items to be appended directly
           @_head.append(
-            data_sel.filter 'script:not([src]):not([data-scope="common"])'
+            data_sel.filter 'script:not([src]):not([data-progressio-scope="common"])'
           )
 
           @_head.append(
             data_sel.filter(
-              'link[rel="stylesheet"]:not([href]):not([data-scope="common"])'
+              'link[rel="stylesheet"]:not([href]):not([data-progressio-scope="common"])'
             )
           )
 
@@ -290,14 +292,14 @@ class ProgressioPage
             js: [],
             css: []
 
-          data_sel.filter('script[src]:not([data-scope="common"])').each ->
+          data_sel.filter('script[src]:not([data-progressio-scope="common"])').each ->
             script_src = $(this).attr 'src'
 
             if script_src
               load_list.js.push script_src
 
           data_sel.filter(
-            'link[href][rel="stylesheet"]:not([data-scope="common"])'
+            'link[href][rel="stylesheet"]:not([data-progressio-scope="common"])'
           ).each ->
             stylesheet_href = $(this).attr 'href'
 
