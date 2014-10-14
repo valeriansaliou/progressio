@@ -82,7 +82,7 @@ module.exports = function(grunt) {
   };
 
   var GRUNT_TASKS_WATCH = {
-    javascripts: ['coffee', 'replace', 'concat', 'copy:javascripts'],
+    javascripts: ['coffee', 'concat', 'copy:javascripts'],
     stylesheets: ['compass', 'copy:stylesheets'],
     images: ['compass', 'copy:stylesheets']
   };
