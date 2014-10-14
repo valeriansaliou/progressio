@@ -3,7 +3,7 @@ Progressio
 
 Progressio transforms your static website to a dynamic environment. Pages are loaded asynchronously, with the use of browser history JavaScript API and a beautiful overlay progress bar.
 
-This library was originally built for [Waaave](https://waaave.com/). You can see it live there.
+This library was originally built for [Waaave](https://waaave.com/) - you can test it live there.
 
 Progressio is published under the terms of the Mozilla Public License v2.0 (MPL v2.0) license - see the LICENSE.md file.
 
@@ -12,7 +12,9 @@ Progressio is published under the terms of the Mozilla Public License v2.0 (MPL 
 
 ## Demo
 
-You can test our online demo of Progression there: https://demo.hakuma.holdings/valerian.saliou/progressio/examples/simple.html
+You can test our online demo of Progressio there: https://demo.hakuma.holdings/valerian.saliou/progressio/examples/simple.html
+
+_This online demo is the replica of what you can find in the ./examples folder._
 
 
 ## Installation Notes
@@ -43,7 +45,7 @@ Using Progressio is straightforward. Here's how to use it.
 
 ### 1. Include library files
 
-Load Progression source files and its dependencies in the head of your website pages. Please add it globally to your website (in your base template - provided you're using a template system).
+Load Progressio source files and its dependencies in the head of your website pages. Please add it globally to your website (in your base template - provided you're using a template system).
 
 ```html
 <!-- BEGIN Dependencies -->
