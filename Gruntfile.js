@@ -99,10 +99,6 @@ module.exports = function(grunt) {
 
 
   // Map files
-  var GRUNT_MAIN_FILES = [
-    ENV_PATHS.libraries + '/console/console.js',
-  ];
-
   var GRUNT_BASE_FILES = [
     'progressio'
   ];
@@ -112,8 +108,7 @@ module.exports = function(grunt) {
   var GRUNT_LIBRARY_FILES = [
     ENV_PATHS.libraries + '/jquery/jquery.js',
     ENV_PATHS.libraries + '/jquery.timers/jquery.timers.js',
-    ENV_PATHS.libraries + '/jsjac/jsjac.uncompressed.js',
-    ENV_PATHS.libraries + '/console.js/console.js',
+    ENV_PATHS.libraries + '/console/console.js',
   ];
 
   var GRUNT_LIBRARY_PREPROCESSED_FILES = [
