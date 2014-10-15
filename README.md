@@ -68,10 +68,13 @@ Progressio needs to be initialized in order to apply its change.
 Once the library is loaded (on document ready, typically), execute the following snippet:
 
 ```javascript
-Progressio.init({
+(new Progressio({
   /* {blue|red|green|yellow|orange|black|purple|(custom)} */
-  color: 'blue'
-});
+  color: 'blue',
+
+  /* [optional] Console wrapper (native console or Console.js) */
+  console: Console,
+})).apply();
 ```
 
 **Note: Progressio is configurable, refer to the comments above each line for available values.**
