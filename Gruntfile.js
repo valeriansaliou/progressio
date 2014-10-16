@@ -62,14 +62,6 @@ module.exports = function(grunt) {
       ['clean:temporary']
     ),
 
-    with_libs: ['clean:reset'].concat(
-      ['bower:install'],
-      GRUNT_TASKS_BUILD_COMMON,
-      GRUNT_TASKS_BUILD_BANNER.main,
-      GRUNT_TASKS_BUILD_SHIP,
-      ['clean:temporary']
-    ),
-
     dev: ['clean:build'].concat(
       GRUNT_TASKS_BUILD_COMMON,
       ['clean:temporary']

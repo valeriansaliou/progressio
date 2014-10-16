@@ -35,8 +35,7 @@ Progressio can be built using the GruntJS build system.
 
 Execute one of the following commands to build the library:
 
-* Without libraries (recommended): `grunt build`
-* Include libraries: `build:with_libs`
+* `grunt build`
 
 Once done, you can retrieve the progressio.js and progressio.css files in the build/ folder.
 
