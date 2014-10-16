@@ -11,16 +11,14 @@
 -->
 
 <!DOCTYPE html>
-<html>
+<html data-environment="development">
   <head>
     <meta charset='utf-8'>
 
     <title>Progressio - Simple Example</title>
 
     <!-- Dependencies -->
-    <script src="../lib/jquery/jquery.js" type="text/javascript"></script>
-    <script src="../lib/jquery.timers/jquery.timers.js" type="text/javascript"></script>
-    <script src="../lib/console/console.js" type="text/javascript"></script>
+    <script src="../build/javascripts/libs.js" type="text/javascript"></script>
 
     <!-- Progressio -->
     <script src="../build/javascripts/progressio.js" type="text/javascript"></script>
@@ -30,7 +28,6 @@
     <link rel="stylesheet" href="./styles/common.css" type="text/css" media="all" />
     <link rel="stylesheet" href="./styles/simple.css" type="text/css" media="all" />
 
-    <script src="./scripts/common.js" type="text/javascript"></script>
     <script src="./scripts/simple.js" type="text/javascript"></script>
 </head>
 
@@ -45,31 +42,35 @@
   <div id="content">
     <p>Try to change pages and see how Progressio beautifully transitions between them.</p>
 
-    <select name="progressio_color">
-      <option value="blue">Blue</option>
-      <option value="red">Red</option>
-      <option value="green">Green</option>
-      <option value="yellow">Yellow</option>
-      <option value="orange">Orange</option>
-      <option value="black">Black</option>
-      <option value="purple">Purple</option>
-    </select>
+    <label class="progressio_color_container">
+      <span class="label"><b>Loading bar color</b></span>
 
-    <ul>
+      <select name="progressio_color">
+        <option value="blue" selected="selected">Blue</option>
+        <option value="red">Red</option>
+        <option value="green">Green</option>
+        <option value="yellow">Yellow</option>
+        <option value="orange">Orange</option>
+        <option value="black">Black</option>
+        <option value="purple">Purple</option>
+      </select>
+    </label>
+
+    <ul class="progressio_test_pages">
       <li>
-        <a href="./?page1">Page 1</a>
+        <a href="./simple.html?page1">Page 1</a>
       </li>
 
       <li>
-        <a href="./?page2">Page 2</a>
+        <a href="./simple.html?page2">Page 2</a>
       </li>
 
       <li>
-        <a href="./?page3">Page 3</a>
+        <a href="./simple.html?page3">Page 3</a>
       </li>
 
       <li>
-        <a href="./?page4">Page 4</a>
+        <a href="./simple.html?page4">Page 4</a>
       </li>
     </ul>
   </div>

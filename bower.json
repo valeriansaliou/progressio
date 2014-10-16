@@ -4,6 +4,8 @@
   "dependencies" : {
     "jquery": "latest",
     "jquery.timers": "patryk/jquery.timers",
+    "jquery.hasparent": "valeriansaliou/jquery.hasparent",
+    "lazyload": "rgrove/lazyload",
     "console": "valeriansaliou/console.js"
   },
 

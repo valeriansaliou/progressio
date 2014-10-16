@@ -8,10 +8,20 @@
   @license Mozilla Public License v2.0 (MPL v2.0)
  */
 
-#header {
-
+#content .progressio_color_container {
+  margin-top: 32px;
+  display: block;
 }
 
-#content {
+#content .progressio_color_container select {
+  margin-left: 10px;
+}
 
+#content .progressio_test_pages {
+  margin-top: 34px;
+}
+
+#content .progressio_test_pages li {
+  list-style-type: none;
+  margin: 4px 0;
 }

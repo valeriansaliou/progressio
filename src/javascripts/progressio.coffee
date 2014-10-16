@@ -8,7 +8,7 @@ Copyright: 2014, Valérian Saliou
 
 
 
-class Progressio
+class window.Progressio
   # Main constructor
   constructor: (options) ->
     try
@@ -17,7 +17,9 @@ class Progressio
         'jquery'        : jQuery
         'jquery.timers' : jQuery.timers
 
-      unless typeof @_options.console is 'function'
+      @_jQuery = @_deps.jquery
+
+      unless typeof @_options.console is 'object'
         @_options.console =
           log            : -> return
           info           : -> return
@@ -32,12 +34,25 @@ class Progressio
           groupEnd       : -> return
           dir            : -> return
           count          : -> return
+
+      # Child classes (instanciate)
+      @ProgressioPage      = new ProgressioPage @, @_options, @_deps
+      @ProgressioRegistry  = new ProgressioRegistry @, @_options, @_deps
+      @ProgressioMisc      = new ProgressioMisc @, @_options, @_deps
+
+      # Launch the Progressio wrapper :)
+      @ProgressioPage.register()
+      @ProgressioRegistry.events()
     catch error
       @_options.console.error 'Progressio.constructor', error
 
 
   apply: ->
     try
+      @_options.console.info(
+        'Progressio.ProgressioPage.apply', 'Applying Progressio...'
+      )
+
       # Check for deps
       for dep_name, dep_wrapper in @_deps
         if typeof dep_wrapper is 'undefined'
@@ -49,10 +64,19 @@ class Progressio
       do_create = true
 
       container_sel = @_jQuery '.progressio-container'
+      container_class = 'progressio-container'
+
+      if @_options.fixed is true
+        container_class = "#{container_class} progressio-position-fixed"
+
+        if @_options.location is 'bottom'
+          container_class = "#{container_class} progressio-location-bottom"
+
       color = @_options.color or 'blue'
+      color_class = "progressio-color-#{color}"
 
       if container_sel.size()
-        unless container_sel.filter("color-#{color_class}").size()
+        if container_sel.filter(".#{color_class}").size()
           do_create = false
         else
           container_sel.remove()
@@ -60,29 +84,57 @@ class Progressio
       if do_create is true
         @_jQuery('body').prepend(
           """
-          <div class="progressio-container">
-            <div class="progressio color-#{color_class}"></div>
+          <div class="#{container_class} #{color_class}">
+            <div class="progressio-bar"></div>
           </div>
           """
         )
 
+      @_options.console.info 'Progressio.ProgressioPage.apply', 'Applied.'
     catch error
       @_options.console.error 'Progressio.ProgressioPage.apply', error
+
+
+  update: ->
+    try
+      @ProgressioPage.fire_dom_updated()
+    catch error
+      @_options.console.error 'Progressio.ProgressioPage.update', error
+
+
+  get_id: ->
+    try
+      return @ProgressioPage.get_id()
+    catch error
+      @_options.console.error 'Progressio.ProgressioPage.get_id', error
+
+
+  open: (url) ->
+    try
+      @ProgressioPage.open_page url
+    catch error
+      @_options.console.error 'Progressio.ProgressioPage.open', error
+
+
+  register_event: (namespace, fn_callback, fn_context, ignore_init) ->
+    try
+      @ProgressioRegistry.register_event(
+        namespace, fn_callback, fn_context, ignore_init
+      )
+    catch error
+      @_options.console.error 'Progressio.ProgressioPage.register_event', error
 
 
 
   # Child classes (define)
   class ProgressioPage
-    constructor: (options, deps) ->
+    constructor: (parent, options, deps) ->
       try
+        # Configuration
+        @__       = parent
         @_options = options
         @_jQuery  = deps.jquery
-      catch error
-        @_options.console.error 'ProgressioPage.constructor', error
 
-
-    init: ->
-      try
         # Selectors
         @_window_sel = @_jQuery window
         @_document_sel = @_jQuery document
@@ -99,16 +151,16 @@ class Progressio
         @_http_host = document.location.host
         @_state_url = document.location.pathname
       catch error
-        @_options.console.error 'Progressio.ProgressioPage.init', error
+        @_options.console.error 'Progressio.ProgressioPage.constructor', error
 
 
     register: ->
       try
-        @ProgressioRegistry.register_event(
+        @__.ProgressioRegistry.register_event(
           'page:events_state_change', @events_state_change, @
         )
 
-        @ProgressioRegistry.register_event(
+        @__.ProgressioRegistry.register_event(
           'page:async_load', @events_async_load, @
         )
       catch error
@@ -148,13 +200,13 @@ class Progressio
 
             try
               # Used by some to open up the target page in a new tab rather
-              if @ProgressioMisc.key_event().ctrlKey or \
-                 @ProgressioMisc.key_event().metaKey
+              if self.__.ProgressioMisc.key_event().ctrlKey or \
+                 self.__.ProgressioMisc.key_event().metaKey
                 return_value = true
               else
-                self._run_async_load (@_jQuery(this).attr 'href')
+                self._run_async_load (self._jQuery(this).attr 'href')
             catch _error
-              @_options.console.error(
+              self._options.console.error(
                 'Progressio.ProgressioPage.events_async_load[async]', _error
               )
             finally
@@ -164,7 +216,7 @@ class Progressio
           eligible_links.attr 'data-progressio-async', 'active'
 
           if eligible_links_count
-            Console.debug(
+            @_options.console.debug(
               'Progressio.ProgressioPage.events_async_load',
               "Yay! #{eligible_links_count} internal links ajax-ified."
             )
@@ -222,15 +274,17 @@ class Progressio
 
     _eligible_links_async_load: ->
       try
+        self = @
+
         http_base = "#{@_http_protocol}://#{@_http_host}/"
-        r_match = new RegExp "^(#{http_base}|(/(?!https?://).*))", 'gi'
+        r_match = new RegExp "^(#{http_base}|(\.?/(?!https?://).*))", 'gi'
 
         return @_document_sel.find(
           'a[href]:not([target="_blank"], ' +\
           '[data-progressio-async="disabled"], ' +\
           '[data-progressio-async="active"])'
         ).filter ->
-          return @_jQuery(this).attr('href').match r_match
+          return self._jQuery(this).attr('href').match r_match
       catch error
         @_options.console.error(
           'Progressio.ProgressioPage._eligible_links_async_load', error
@@ -252,13 +306,13 @@ class Progressio
         @_jQuery.ajax(
           url: url
           headers:
-            'X-Requested-With': 'async_page_loader'
+            'X-Requested-With': 'Progressio'
           type: 'GET'
           success: req_cb
           error: req_cb
         )
 
-        Console.debug(
+        @_options.console.debug(
           'Progressio.ProgressioPage._run_async_load', "Loading page: #{url}"
         )
       catch error
@@ -277,7 +331,7 @@ class Progressio
 
         if id is @_id_async
           data_sel = @_jQuery data
-          new_dom = data_sel.filter '#body:first'
+          new_dom = data_sel.filter "#{@__._options.container}:first"
 
           # Valid response?
           if new_dom.size()
@@ -298,7 +352,7 @@ class Progressio
               old_namespaced_script_sel.remove()
               old_namespaced_stylesheet_sel.remove()
 
-              Console.debug(
+              self._options.console.debug(
                 'Progressio.ProgressioPage._handle_async_load',
                 "Done cleanup of old DOM before page: #{url}"
               )
@@ -306,15 +360,17 @@ class Progressio
             cb_post_display_fn = ->
               # Finish load, happily! :)
               self._end_progress_bar()
-              self._scroll_top()
 
-              # Reset other layout bundles
-              self._document_sel.oneTime(
-                250,
-                -> @LayoutComment.reset_last_hash()
-              )
+              if typeof self.__._options.callbacks is 'object' and \
+                 typeof self.__._options.callbacks.post_display is 'object' and \
+                 typeof self.__._options.callbacks.post_display.before is 'function' and \
+                 self.__._options.callbacks.post_display.before() is true
+                self._scroll_top()
 
-              Console.debug(
+                if typeof self.__._options.callbacks.post_display.after is 'function'
+                  self.__._options.callbacks.post_display.after()
+
+              self._options.console.debug(
                 'Progressio.ProgressioPage._handle_async_load',
                 "Done post display actions for page: #{url}"
               )
@@ -324,16 +380,31 @@ class Progressio
               self._document_sel.oneTime(
                 250,
                 ->
+                  if typeof self.__._options.callbacks is 'object' and \
+                     typeof self.__._options.callbacks.on_complete is 'object' and \
+                     typeof self.__._options.callbacks.on_complete.before is 'function' and \
+                     self.__._options.callbacks.on_complete.before() is true
+                    if typeof self.__._options.callbacks.on_complete.after is 'function'
+                      self.__._options.callbacks.on_complete.after()
+
                   # Cleanup DOM
                   cb_cleanup_fn()
 
                   self._document_sel.find('title').replaceWith title
-                  self._document_sel.find('#body').remove()
-                  self._document_sel.find('#body_new').attr('id', 'body').show()
+
+                  self._document_sel.find(
+                    "#{self.__._options.container}"
+                  ).remove()
+
+                  self._document_sel.find(
+                    "#{self.__._options.container}_new"
+                  ).attr(
+                    'id', 'body'
+                  ).show()
 
                   # Restore DOM events
-                  @ProgressioRegistry.restore_events(
-                    '#body'
+                  self.__.ProgressioRegistry.restore_events(
+                    "#{self.__._options.container}"
                   )
 
                   # All done, now pushing to the history
@@ -344,7 +415,7 @@ class Progressio
                   # Trigger post-display events
                   cb_post_display_fn()
 
-                  Console.debug(
+                  self._options.console.debug(
                     'Progressio.ProgressioPage._handle_async_load',
                     "Loaded page: #{url}"
                   )
@@ -352,15 +423,24 @@ class Progressio
 
             # Purge old environment
             @purge_global_events()
-            @ProgressioRegistry.unload_bundles()
+            @__.ProgressioRegistry.unload_bundles()
 
             # Append new DOM (in a temporary-hidden fashion)
-            @_document_sel.find('#body_new').remove()
+            @_document_sel.find("#{@__._options.container}_new").remove()
 
-            new_dom.attr 'id', 'body_new'
+            container_first = @__._options.container.substr 0, 1
+            container_trim  = @__._options.container.substr(
+              1, @__._options.container.length
+            )
+
+            if container_first is '#'
+              new_dom.attr 'id', container_trim
+            else if container_first is '.'
+              new_dom.attr 'class', container_trim
+
             new_dom.hide()
             new_dom.insertBefore(
-              @_document_sel.find '#body'
+              @_document_sel.find "#{@__._options.container}"
             )
 
             # Items to be appended directly
@@ -384,7 +464,7 @@ class Progressio
             data_sel.filter(
               'script[src]:not([data-progressio-scope="common"])'
             ).each ->
-              script_src = @_jQuery(this).attr 'src'
+              script_src = self._jQuery(this).attr 'src'
 
               if script_src
                 load_list.js.push script_src
@@ -393,7 +473,7 @@ class Progressio
               'link[href][rel="stylesheet"]' +\
               ':not([data-progressio-scope="common"])'
             ).each ->
-              stylesheet_href = @_jQuery(this).attr 'href'
+              stylesheet_href = self._jQuery(this).attr 'href'
 
               if stylesheet_href
                 load_list.css.push stylesheet_href
@@ -403,7 +483,7 @@ class Progressio
               if load_list.js.length
                 callback_counter++
 
-                Console.info(
+                @_options.console.info(
                   'Progressio.ProgressioPage._handle_async_load',
                   'Loading scripts...'
                 )
@@ -411,7 +491,7 @@ class Progressio
                 LazyLoad.js(
                   load_list.js,
                   ->
-                    Console.info(
+                    self._options.console.info(
                       'Progressio.ProgressioPage._handle_async_load[async]',
                       'Scripts fully loaded'
                     )
@@ -423,7 +503,7 @@ class Progressio
               if load_list.css.length
                 callback_counter++
 
-                Console.info(
+                @_options.console.info(
                   'Progressio.ProgressioPage._handle_async_load',
                   'Loading stylesheets...'
                 )
@@ -431,7 +511,7 @@ class Progressio
                 LazyLoad.css(
                   load_list.css,
                   ->
-                    Console.info(
+                    self._options.console.info(
                       'Progressio.ProgressioPage._handle_async_load[async]',
                       'Stylesheets fully loaded'
                     )
@@ -440,7 +520,7 @@ class Progressio
                       cb_complete_fn()
                 )
 
-              Console.debug(
+              @_options.console.debug(
                 'Progressio.ProgressioPage._handle_async_load',
                 "Delayed page load (waiting for sources to be loaded): #{url}"
               )
@@ -455,7 +535,7 @@ class Progressio
               "Got an abnormal or error response from: #{url}"
             )
         else
-          Console.warn(
+          @_options.console.warn(
             'Progressio.ProgressioPage._handle_async_load',
             "Dropped outpaced ID for page: #{url}"
           )
@@ -551,31 +631,26 @@ class Progressio
 
     _scroll_top: ->
       try
-        # Hack: do not interfere w/ other scroll events
-        good_to_go = not @LayoutComment.get_hash_id() and true
-
-        if good_to_go
-          @_window_sel.scrollTop 0
+        @_window_sel.scrollTop 0
       catch error
         @_options.console.error 'Progressio.ProgressioPage._scroll_top', error
 
 
   class ProgressioRegistry
-    constructor: (options, deps) ->
+    constructor: (parent, options, deps) ->
       try
+        # Configuration
+        @__       = parent
         @_options = options
         @_jQuery  = deps.jquery
-      catch error
-        @_options.console.error 'ProgressioRegistry.constructor', error
 
-
-    init: ->
-      try
         # Variables
         @_registry_events = {}
         @_registry_bundles = []
       catch error
-        @_options.console.error 'Progressio.ProgressioRegistry.init', error
+        @_options.console.error(
+          'Progressio.ProgressioRegistry.constructor', error
+        )
 
 
     events: ->
@@ -598,7 +673,7 @@ class Progressio
             if not (is_init and cur_registry[2])
               (cur_registry[0].bind cur_registry[1])(parent)
 
-            Console.debug(
+            @_options.console.debug(
               'Progressio.ProgressioRegistry._bind_events[loop]',
               "Bound callback function for #{ns}"
             )
@@ -619,7 +694,7 @@ class Progressio
         ignore_init = false or ignore_init
         @_registry_events[namespace] = [fn_callback, fn_context, ignore_init]
 
-        Console.info(
+        @_options.console.info(
           'Progressio.ProgressioRegistry.register_event',
           "Registered event: #{namespace}"
         )
@@ -634,7 +709,7 @@ class Progressio
         if namespace in @_registry_events
           delete @_registry_events[namespace]
 
-          Console.info(
+          @_options.console.info(
             'Progressio.ProgressioRegistry.unregister_event',
             "Unregistered event: #{namespace}"
           )
@@ -685,7 +760,7 @@ class Progressio
             delete _[cur_bundle]
             count_unload++
 
-        Console.info(
+        @_options.console.info(
           'Progressio.ProgressioRegistry.unload_bundles',
           "Unloaded #{count_unload} bundles"
         )
@@ -696,22 +771,17 @@ class Progressio
 
 
   class ProgressioMisc
-    constructor: (options, deps) ->
+    constructor: (parent, options, deps) ->
       try
+        # Configuration
+        @__       = parent
         @_options = options
         @_jQuery  = deps.jquery
-      catch error
-        @_options.console.error 'ProgressioMisc.constructor', error
 
-
-    init: ->
-      try
-        # Selectors
-        @_window = @_jQuery window
-
+        # Storage
         @_key_event = {}
       catch error
-        @_options.console.error 'Progressio.ProgressioMisc.init', error
+        @_options.console.error 'Progressio.ProgressioMisc.constructor', error
 
 
     key_event: ->
@@ -719,10 +789,3 @@ class Progressio
         return @_key_event
       catch error
         @_options.console.error 'Progressio.ProgressioMisc.key_event', error
-
-
-
-  # Child classes (instanciate)
-  @ProgressioPage      = new ProgressioPage @_options, @_deps
-  @ProgressioRegistry  = new ProgressioRegistry @_options, @_deps
-  @ProgressioMisc      = new ProgressioMisc @_options, @_deps

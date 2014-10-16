@@ -14,53 +14,63 @@
   height: 2px
   background: #dbe0de
 
-  .progressio
+  .progressio-bar
     position: relative
-    height: 100%
+    height: 0
     border-top: 1px solid #00a7f8
     border-bottom: 1px solid #225b9d
     +box-shadow(0 0 0 0)
     +transition-property(box-shadow)
     +transition-delay(350ms)
 
-  &.color-red
+  &.progressio-position-fixed
+    position: fixed
+    top: 0
+    left: 0
+    right: 0
+
+    &.progressio-location-bottom
+      top: auto
+      bottom: 0
+
+  &.progressio-color-red
     background: #dbe0de
 
-    .progressio
+    .progressio-bar
       border-top-color: #f81700
       border-bottom-color: #9d0700
 
-  &.color-green
+  &.progressio-color-green
     background: #dbe0de
 
-    .progressio
+    .progressio-bar
       border-top-color: #00f82e
       border-bottom-color: #009d1b
 
-  &.color-yellow
+  &.progressio-color-yellow
     background: #dbe0de
 
-    .progressio
+    .progressio-bar
       border-top-color: #f8e200
       border-bottom-color: #9d9000
 
-  &.color-orange
+  &.progressio-color-orange
     background: #dbe0de
 
-    .progressio
+    .progressio-bar
       border-top-color: #f89b00
       border-bottom-color: #9d6500
 
-  &.color-black
+  &.progressio-color-black
     background: #dbe0de
 
-    .progressio
+    .progressio-bar
       border-top-color: #31302d
       border-bottom-color: #000000
 
-  &.color-purple
+  &.progressio-color-purple
     background: #dbe0de
 
-    .progressio
+    .progressio-bar
       border-top-color: #c200f8
       border-bottom-color: #80009d

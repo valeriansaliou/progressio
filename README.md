@@ -25,6 +25,8 @@ Progressio depends on the following libraries:
 
 * [jQuery](https://github.com/jquery/jquery)
 * [jQuery Timers](https://github.com/patryk/jquery.timers)
+* [jQuery hasParent](https://github.com/valeriansaliou/jquery.hasparent)
+* [LazyLoad](https://github.com/rgrove/lazyload/)
 * [Console.js](https://github.com/valeriansaliou/console.js)
 
 ### Build
@@ -49,14 +51,12 @@ Load Progressio source files and its dependencies in the head of your website pa
 
 ```html
 <!-- BEGIN Dependencies -->
-<script src="./libs/javascripts/jquery.js" type="text/javascript" data-progressio-scope="common"></script>
-<script src="./libs/javascripts/jquery.timers.js" type="text/javascript" data-progressio-scope="common"></script>
-<script src="./libs/javascripts/console.js" type="text/javascript" data-progressio-scope="common"></script>
+<script src="./build/javascripts/libs.min.js" type="text/javascript" data-progressio-scope="common"></script>
 <!-- END Dependencies -->
 
 <!-- BEGIN Progressio -->
-<script src="./libs/javascripts/progressio.js" type="text/javascript" data-progressio-scope="common"></script>
-<link rel="stylesheet" href="./libs/stylesheets/progressio.css" type="text/css" data-progressio-scope="common">
+<script src="./build/javascripts/progressio.min.js" type="text/javascript" data-progressio-scope="common"></script>
+<link rel="stylesheet" href="./build/javascripts/progressio.min.css" type="text/css" data-progressio-scope="common">
 <!-- END Progressio -->
 ```
 
@@ -70,7 +70,33 @@ Once the library is loaded (on document ready, typically), execute the following
 ```javascript
 (new Progressio({
   /* {blue|red|green|yellow|orange|black|purple|(custom)} */
+  /* Default: 'blue' */
   color: 'blue',
+
+  /* [optional] Fix position of the loading bar (always visible on top, even when scrolling down) */
+  /* Default: false */
+  fixed: false,
+
+  /* [optional] Loading bar location {top|bottom} - requires 'fixed' set to true */
+  /* Default: 'top' */
+  location: 'top',
+
+  /* [optional] Site-wide page container */
+  /* Default: '#body' */
+  container: '#body',
+
+  /* [optional] Event callbacks */
+  callbacks: {
+    post_display: {
+      before: function() {},
+      after: function() {}
+    },
+
+    on_complete: {
+      before: function() {},
+      after: function() {}
+    }
+  },
 
   /* [optional] Console wrapper (native console or Console.js) */
   console: Console,
@@ -111,3 +137,8 @@ Set its Progressio scope to "common" by adding the `data-progressio-scope="commo
 <!-- This stylesheet WILL BE replaced -->
 <link rel="stylesheet" href="/can/be/replaced.css" type="text/css">
 ```
+
+
+### 5. Library API
+
+Progressio provides some functions
