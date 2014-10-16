@@ -23,7 +23,6 @@ module.exports = function(grunt) {
   var GRUNT_TASKS_BUILD_COMMON = [
     'coffee',
     'compass',
-    'shell',
     'concat',
     'copy'
   ];
@@ -572,18 +571,6 @@ module.exports = function(grunt) {
     },
 
 
-    // Task: Shell
-    shell: {
-      make_progressio: {
-        options: {
-          stderr: false
-        },
-
-        command: ('cd ' + ENV_PATHS.libraries + '/progressio && npm install && grunt build')
-      }
-    },
-
-
     // Task: CSSMin
     cssmin: {
       options: {
@@ -619,7 +606,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-banner');
-  grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-uglify');
 
