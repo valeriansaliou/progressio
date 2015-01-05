@@ -84,6 +84,10 @@ Once the library is loaded (on document ready, typically), execute the following
   /* Default: '#body' */
   container: '#body',
 
+  /* [optional] Where to insert the load bar? */
+  /* Default: 'body' */
+  load_bar: 'body',
+
   /* [optional] Event callbacks */
   callbacks: {
     post_display: {

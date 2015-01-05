@@ -25,6 +25,7 @@ class window.Progressio
         fixed      : (options.fixed      or false)
         location   : (options.location   or 'top')
         container  : (options.container  or '#body')
+        load_bar   : (options.load_bar   or 'body')
         callbacks  : (options.callbacks  or -1)
         console    : (options.console    or -1)
 
@@ -144,7 +145,10 @@ class window.Progressio
         )
 
         loader_bar_container_sel.append @_loader_bar_sel
-        @_jQuery('body').prepend loader_bar_container_sel
+
+        @_jQuery(@_options.load_bar).prepend(
+          loader_bar_container_sel
+        )
 
         @_options.console.info(
           'Progressio.color', "Changed bar color to #{to_color}."

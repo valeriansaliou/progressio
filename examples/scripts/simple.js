@@ -21,6 +21,7 @@ $(document).ready(function() {
     fixed: true,
     location: 'top',
     container: '#content',
+    load_bar: 'body',
 
     callbacks: {
       post_display: {
