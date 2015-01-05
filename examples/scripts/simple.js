@@ -20,8 +20,8 @@ $(document).ready(function() {
 
     fixed: true,
     location: 'top',
-    container: '#content',
-    load_bar: 'body',
+    container: '#body',
+    load_bar: '#progressio',
 
     callbacks: {
       post_display: {
