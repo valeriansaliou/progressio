@@ -1,7 +1,7 @@
 {
   "name": "progressio",
   "description": "Beautiful & stylish asynchronous page loader. Makes a static website dynamic in a breeze.",
-  "version": "0.1.0-alpha",
+  "version": "0.3.0-alpha",
   "homepage": "https://github.com/valeriansaliou/progressio",
   "license": "MPL-2.0",
 
@@ -40,6 +40,7 @@
     "grunt-contrib-concat": "0.5.0",
     "grunt-contrib-copy": "0.6.0",
     "grunt-banner": "0.2.3",
+    "grunt-shell": "1.1.1",
     "grunt-contrib-cssmin": "0.10.0",
     "grunt-contrib-uglify": "0.6.0"
   }

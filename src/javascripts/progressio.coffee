@@ -8,11 +8,27 @@ Copyright: 2014, Valérian Saliou
 
 
 
+is_progressio_constructed = false
+is_progressio_applied     = false
+
+
 class window.Progressio
   # Main constructor
   constructor: (options) ->
     try
-      @_options = options
+      # Initialize options
+      unless typeof options is 'object'
+        options = {}
+
+      @_options =
+        color      : (options.color      or 'blue')
+        fixed      : (options.fixed      or false)
+        location   : (options.location   or 'top')
+        container  : (options.container  or '#body')
+        callbacks  : (options.callbacks  or -1)
+        console    : (options.console    or -1)
+
+      # Store shared libs
       @_deps    =
         'jquery'        : jQuery
         'jquery.timers' : jQuery.timers
@@ -35,6 +51,12 @@ class window.Progressio
           dir            : -> return
           count          : -> return
 
+      # Already constructed?
+      if is_progressio_constructed is true
+        throw new Error(
+          "Cannot instanciate Progressio more than once!"
+        )
+
       # Child classes (instanciate)
       @ProgressioPage      = new ProgressioPage @, @_options, @_deps
       @ProgressioRegistry  = new ProgressioRegistry @, @_options, @_deps
@@ -43,6 +65,9 @@ class window.Progressio
       # Launch the Progressio wrapper :)
       @ProgressioPage.register()
       @ProgressioRegistry.events()
+
+      # Done constructing!
+      is_progressio_constructed = true
     catch error
       @_options.console.error 'Progressio.constructor', error
 
@@ -50,8 +75,14 @@ class window.Progressio
   apply: ->
     try
       @_options.console.info(
-        'Progressio.ProgressioPage.apply', 'Applying Progressio...'
+        'Progressio.apply', 'Applying Progressio...'
       )
+
+      # Already applied?
+      if is_progressio_applied is true
+        throw new Error(
+          "Cannot apply Progressio DOM more than once!"
+        )
 
       # Check for deps
       for dep_name, dep_wrapper in @_deps
@@ -61,6 +92,24 @@ class window.Progressio
           )
 
       # Create markup
+      @color @_options.color
+
+      # Done applying!
+      is_progressio_applied = true
+
+      @_options.console.info 'Progressio.apply', 'Applied.'
+    catch error
+      @_options.console.error 'Progressio.apply', error
+
+
+  color: (to_color) ->
+    try
+      @_options.console.info(
+        'Progressio.color', "Changing bar color to #{to_color}..."
+      )
+
+      @_options.color = (to_color or 'blue')
+
       do_create = true
 
       container_sel = @_jQuery '.progressio-container'
@@ -82,38 +131,47 @@ class window.Progressio
           container_sel.remove()
 
       if do_create is true
-        @_jQuery('body').prepend(
+        @_loader_bar_sel = @_jQuery(
           """
-          <div class="#{container_class} #{color_class}">
-            <div class="progressio-bar"></div>
-          </div>
+          <div class="progressio-bar"></div>
           """
         )
 
-      @_options.console.info 'Progressio.ProgressioPage.apply', 'Applied.'
+        loader_bar_container_sel = @_jQuery(
+          """
+          <div class="#{container_class} #{color_class}"></div>
+          """
+        )
+
+        loader_bar_container_sel.append @_loader_bar_sel
+        @_jQuery('body').prepend loader_bar_container_sel
+
+        @_options.console.info(
+          'Progressio.color', "Changed bar color to #{to_color}."
+        )
     catch error
-      @_options.console.error 'Progressio.ProgressioPage.apply', error
+      @_options.console.error 'Progressio.color', error
 
 
   update: ->
     try
       @ProgressioPage.fire_dom_updated()
     catch error
-      @_options.console.error 'Progressio.ProgressioPage.update', error
+      @_options.console.error 'Progressio.update', error
 
 
   get_id: ->
     try
       return @ProgressioPage.get_id()
     catch error
-      @_options.console.error 'Progressio.ProgressioPage.get_id', error
+      @_options.console.error 'Progressio.get_id', error
 
 
   open: (url) ->
     try
       @ProgressioPage.open_page url
     catch error
-      @_options.console.error 'Progressio.ProgressioPage.open', error
+      @_options.console.error 'Progressio.open', error
 
 
   register_event: (namespace, fn_callback, fn_context, ignore_init) ->
@@ -122,7 +180,7 @@ class window.Progressio
         namespace, fn_callback, fn_context, ignore_init
       )
     catch error
-      @_options.console.error 'Progressio.ProgressioPage.register_event', error
+      @_options.console.error 'Progressio.register_event', error
 
 
 
@@ -139,8 +197,6 @@ class window.Progressio
         @_window_sel = @_jQuery window
         @_document_sel = @_jQuery document
         @_head = @_jQuery 'head'
-        @_header_sel = @_jQuery 'header.headers'
-        @_bluelines_sel = @_header_sel.find '.bluelines'
 
         # States
         @_id_async = 0
@@ -361,13 +417,19 @@ class window.Progressio
               # Finish load, happily! :)
               self._end_progress_bar()
 
-              if typeof self.__._options.callbacks is 'object' and \
-                 typeof self.__._options.callbacks.post_display is 'object' and \
-                 typeof self.__._options.callbacks.post_display.before is 'function' and \
-                 self.__._options.callbacks.post_display.before() is true
+              if typeof self.__._options.callbacks \
+                  is 'object' and \
+                 typeof self.__._options.callbacks.post_display \
+                  is 'object' and \
+                 typeof self.__._options.callbacks.post_display.before \
+                  is 'function' and \
+                 self.__._options.callbacks.post_display.before() \
+                  is true
                 self._scroll_top()
 
-                if typeof self.__._options.callbacks.post_display.after is 'function'
+                cb_after = self.__._options.callbacks.post_display.after
+
+                if cb_after is 'function'
                   self.__._options.callbacks.post_display.after()
 
               self._options.console.debug(
@@ -380,11 +442,16 @@ class window.Progressio
               self._document_sel.oneTime(
                 250,
                 ->
-                  if typeof self.__._options.callbacks is 'object' and \
-                     typeof self.__._options.callbacks.on_complete is 'object' and \
-                     typeof self.__._options.callbacks.on_complete.before is 'function' and \
+                  if typeof self.__._options.callbacks \
+                      is 'object' and \
+                     typeof self.__._options.callbacks.on_complete \
+                      is 'object' and \
+                     typeof self.__._options.callbacks.on_complete.before \
+                      is 'function' and \
                      self.__._options.callbacks.on_complete.before() is true
-                    if typeof self.__._options.callbacks.on_complete.after is 'function'
+                    cb_after = self.__._options.callbacks.on_complete.after
+
+                    if cb_after is 'function'
                       self.__._options.callbacks.on_complete.after()
 
                   # Cleanup DOM
@@ -548,13 +615,13 @@ class window.Progressio
     _begin_progress_bar: ->
       try
         # Reset progress bar
-        @_bluelines_sel.stop true
-        @_bluelines_sel.css
+        @__._loader_bar_sel.stop true
+        @__._loader_bar_sel.css
           width: 0
 
         # Animate progress bar!
-        @_bluelines_sel.addClass 'animated'
-        @_bluelines_sel.animate(
+        @__._loader_bar_sel.addClass 'animated'
+        @__._loader_bar_sel.animate(
           width: '50%',
           600,
           'easeOutQuad'
@@ -570,11 +637,11 @@ class window.Progressio
         self = @
 
         # Animate progress bar!
-        @_bluelines_sel.animate(
+        @__._loader_bar_sel.animate(
           width: '100%',
           300,
           'linear',
-          -> self._bluelines_sel.removeClass 'animated'
+          -> self.__._loader_bar_sel.removeClass 'animated'
         )
       catch error
         @_options.console.error(
