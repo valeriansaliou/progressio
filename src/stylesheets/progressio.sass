@@ -10,6 +10,10 @@
 
 
 
+$super-z-index: 999999999
+
+
+
 .progressio-container
   height: 2px
   background: #dbe0de
@@ -19,6 +23,7 @@
     height: 0
     border-top: 1px solid #00a7f8
     border-bottom: 1px solid #225b9d
+    z-index: $super-z-index
     +box-shadow(0 0 0 0)
     +transition-property(box-shadow)
     +transition-delay(350ms)
@@ -28,6 +33,7 @@
     top: 0
     left: 0
     right: 0
+    z-index: $super-z-index
 
     &.progressio-location-bottom
       top: auto
