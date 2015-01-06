@@ -391,7 +391,7 @@ class window.Progressio
 
         if id is @_id_async
           data_sel = @_jQuery data
-          new_dom = data_sel.filter "#{@__._options.container}:first"
+          new_dom = data_sel.filter "#{@_options.container}:first"
 
           # Valid response?
           if new_dom.size()
@@ -421,20 +421,20 @@ class window.Progressio
               # Finish load, happily! :)
               self._end_progress_bar()
 
-              if typeof self.__._options.callbacks \
+              if typeof self._options.callbacks \
                   is 'object' and \
-                 typeof self.__._options.callbacks.post_display \
+                 typeof self._options.callbacks.post_display \
                   is 'object' and \
-                 typeof self.__._options.callbacks.post_display.before \
+                 typeof self._options.callbacks.post_display.before \
                   is 'function' and \
-                 self.__._options.callbacks.post_display.before() \
+                 self._options.callbacks.post_display.before() \
                   is true
                 self._scroll_top()
 
-                cb_after = self.__._options.callbacks.post_display.after
+                cb_after = self._options.callbacks.post_display.after
 
                 if cb_after is 'function'
-                  self.__._options.callbacks.post_display.after()
+                  self._options.callbacks.post_display.after()
 
               self._options.console.debug(
                 'Progressio.ProgressioPage._handle_async_load',
@@ -446,17 +446,17 @@ class window.Progressio
               self._document_sel.oneTime(
                 250,
                 ->
-                  if typeof self.__._options.callbacks \
+                  if typeof self._options.callbacks \
                       is 'object' and \
-                     typeof self.__._options.callbacks.on_complete \
+                     typeof self._options.callbacks.on_complete \
                       is 'object' and \
-                     typeof self.__._options.callbacks.on_complete.before \
+                     typeof self._options.callbacks.on_complete.before \
                       is 'function' and \
-                     self.__._options.callbacks.on_complete.before() is true
-                    cb_after = self.__._options.callbacks.on_complete.after
+                     self._options.callbacks.on_complete.before() is true
+                    cb_after = self._options.callbacks.on_complete.after
 
                     if cb_after is 'function'
-                      self.__._options.callbacks.on_complete.after()
+                      self._options.callbacks.on_complete.after()
 
                   # Cleanup DOM
                   cb_cleanup_fn()
@@ -464,18 +464,25 @@ class window.Progressio
                   self._document_sel.find('title').replaceWith title
 
                   self._document_sel.find(
-                    "#{self.__._options.container}"
+                    "#{self._options.container}"
                   ).remove()
 
-                  self._document_sel.find(
-                    "#{self.__._options.container}_new"
-                  ).attr(
-                    'id', 'body'
+                  new_container_sel = self._document_sel.find(
+                    "#{self._options.container}_new"
+                  )
+
+                  # Autodetect whether the selector is an ID or a class
+                  new_container = self.__.ProgressioMisc.split_selector_path(
+                    self._options.container
+                  )
+
+                  new_container_sel.attr(
+                    new_container.attr, new_container.value
                   ).show()
 
                   # Restore DOM events
                   self.__.ProgressioRegistry.restore_events(
-                    "#{self.__._options.container}"
+                    "#{self._options.container}"
                   )
 
                   # All done, now pushing to the history
@@ -497,21 +504,19 @@ class window.Progressio
             @__.ProgressioRegistry.unload_bundles()
 
             # Append new DOM (in a temporary-hidden fashion)
-            @_document_sel.find("#{@__._options.container}_new").remove()
+            @_document_sel.find("#{@_options.container}_new").remove()
 
-            container_first = @__._options.container.substr 0, 1
-            container_trim  = @__._options.container.substr(
-              1, @__._options.container.length
+            container_split = @__.ProgressioMisc.split_selector_path(
+              @_options.container
             )
 
-            if container_first is '#'
-              new_dom.attr 'id', container_trim
-            else if container_first is '.'
-              new_dom.attr 'class', container_trim
+            new_dom.attr(
+              container_split.attr, "#{container_split.value}_new"
+            )
 
             new_dom.hide()
             new_dom.insertBefore(
-              @_document_sel.find "#{@__._options.container}"
+              @_document_sel.find "#{@_options.container}"
             )
 
             # Items to be appended directly
@@ -860,3 +865,33 @@ class window.Progressio
         return @_key_event
       catch error
         @_options.console.error 'Progressio.ProgressioMisc.key_event', error
+
+
+    split_selector_path: (selector_path) ->
+      selector_path_arr =
+        attr  : 'data-selector'
+        value : null
+
+      try
+        selector_path_type = selector_path.substr(
+          0, 1
+        )
+
+        selector_path_arr.value = selector_path.substr(
+          1, selector_path.length
+        )
+
+        switch selector_path_type
+          when '#'
+            selector_path_arr.attr = 'id'
+            break
+
+          when '.'
+            selector_path_arr.attr = 'class'
+            break
+      catch error
+        @_options.console.error(
+          'Progressio.ProgressioMisc.split_selector_path', error
+        )
+      finally
+        return selector_path_arr
