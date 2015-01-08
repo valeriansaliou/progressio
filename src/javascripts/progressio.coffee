@@ -26,6 +26,7 @@ class window.Progressio
         location   : (options.location   or 'top')
         container  : (options.container  or '#body')
         load_bar   : (options.load_bar   or 'body')
+        auto_hide  : (options.auto_hide  or false)
         callbacks  : (options.callbacks  or -1)
         console    : (options.console    or -1)
 
@@ -105,6 +106,8 @@ class window.Progressio
 
   color: (to_color) ->
     try
+      self = @
+
       @_options.console.info(
         'Progressio.color', "Changing bar color to #{to_color}..."
       )
@@ -122,6 +125,11 @@ class window.Progressio
         if @_options.location is 'bottom'
           container_class = "#{container_class} progressio-location-bottom"
 
+      if @_options.auto_hide is true
+        container_class = "#{container_class} progressio-visibility-hide"
+      else
+        container_class = "#{container_class} progressio-visibility-show"
+
       color = @_options.color or 'blue'
       color_class = "progressio-color-#{color}"
 
@@ -138,17 +146,24 @@ class window.Progressio
           """
         )
 
-        loader_bar_container_sel = @_jQuery(
+        @_loader_bar_container_sel = @_jQuery(
           """
           <div class="#{container_class} #{color_class}"></div>
           """
         )
 
-        loader_bar_container_sel.append @_loader_bar_sel
+        @_loader_bar_container_sel.append @_loader_bar_sel
 
         @_jQuery(@_options.load_bar).prepend(
-          loader_bar_container_sel
+          @_loader_bar_container_sel
         )
+
+        # Animate initial load?
+        if @_options.auto_hide is true
+          @ProgressioPage._begin_progress_bar(
+            null,
+            (-> self.ProgressioPage._end_progress_bar())
+          )
 
         @_options.console.info(
           'Progressio.color', "Changed bar color to #{to_color}."
@@ -621,19 +636,31 @@ class window.Progressio
         )
 
 
-    _begin_progress_bar: ->
+    _begin_progress_bar: (cb_start_fn, cb_finish_fn) ->
       try
         # Reset progress bar
         @__._loader_bar_sel.stop true
         @__._loader_bar_sel.css
           width: 0
 
+        # Reveal progress bar?
+        if @_options.auto_hide is true
+          @__._loader_bar_container_sel.stop true
+          @__._loader_bar_container_sel.fadeIn 250
+
         # Animate progress bar!
+        if typeof cb_start_fn is 'function'
+          cb_start_fn()
+
         @__._loader_bar_sel.addClass 'animated'
         @__._loader_bar_sel.animate(
           width: '50%',
           600,
-          'easeOutQuad'
+          'easeOutQuad',
+          ( ->
+            if typeof cb_finish_fn is 'function'
+              cb_finish_fn()
+          )
         )
       catch error
         @_options.console.error(
@@ -641,16 +668,30 @@ class window.Progressio
         )
 
 
-    _end_progress_bar: ->
+    _end_progress_bar: (cb_start_fn, cb_finish_fn) ->
       try
         self = @
 
         # Animate progress bar!
+        if typeof cb_start_fn is 'function'
+          cb_start_fn()
+
         @__._loader_bar_sel.animate(
           width: '100%',
           300,
           'linear',
-          -> self.__._loader_bar_sel.removeClass 'animated'
+
+          ( ->
+            self.__._loader_bar_sel.removeClass 'animated'
+
+            # Hide progress bar?
+            if self._options.auto_hide is true
+              self.__._loader_bar_container_sel.stop true
+              self.__._loader_bar_container_sel.fadeOut 400
+
+            if typeof cb_finish_fn is 'function'
+              cb_finish_fn()
+          )
         )
       catch error
         @_options.console.error(

@@ -88,6 +88,10 @@ Once the library is loaded (on document ready, typically), execute the following
   /* Default: 'body' */
   load_bar: 'body',
 
+  /* [optional] Auto-hide bar when page load is done? */
+  /* Default: false */
+  auto_hide: false,
+
   /* [optional] Event callbacks */
   callbacks: {
     post_display: {

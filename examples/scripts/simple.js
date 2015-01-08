@@ -22,6 +22,7 @@ $(document).ready(function() {
     location: 'top',
     container: '#body',
     load_bar: '#progressio',
+    auto_hide: false,
 
     callbacks: {
       post_display: {
