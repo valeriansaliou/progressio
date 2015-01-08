@@ -144,8 +144,3 @@ Set its Progressio scope to "common" by adding the `data-progressio-scope="commo
 <!-- This stylesheet WILL BE replaced -->
 <link rel="stylesheet" href="/can/be/replaced.css" type="text/css">
 ```
-
-
-### 5. Library API
-
-Progressio provides some functions
