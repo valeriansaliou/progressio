@@ -66,6 +66,8 @@ class window.Progressio
 
       # Launch the Progressio wrapper :)
       @ProgressioPage.register()
+      @ProgressioMisc.register()
+
       @ProgressioRegistry.events()
 
       # Done constructing!
@@ -232,11 +234,11 @@ class window.Progressio
     register: ->
       try
         @__.ProgressioRegistry.register_event(
-          'page:events_state_change', @events_state_change, @
+          'progressio:page:events_state_change', @events_state_change, @
         )
 
         @__.ProgressioRegistry.register_event(
-          'page:async_load', @events_async_load, @
+          'progressio:page:async_load', @events_async_load, @
         )
       catch error
         @_options.console.error 'Progressio.ProgressioPage.register', error
@@ -895,10 +897,32 @@ class window.Progressio
         @_options = options
         @_jQuery  = deps.jquery
 
+        # Selectors
+        @_window_sel = @_jQuery window
+
         # Storage
         @_key_event = {}
       catch error
         @_options.console.error 'Progressio.ProgressioMisc.constructor', error
+
+
+    register: ->
+      try
+        @__.ProgressioRegistry.register_event(
+          'progressio:misc:events_key', @events_key, @
+        )
+      catch error
+        @_options.console.error 'Progressio.ProgressioMisc.register', error
+
+
+    events_key: ->
+      try
+        self = @
+
+        @_window_sel.keydown (evt) -> (self._key_event = evt)
+        @_window_sel.keyup -> (self._key_event = {})
+      catch error
+        @_options.console.error 'Progressio.ProgressioMisc.events_key', error
 
 
     key_event: ->
