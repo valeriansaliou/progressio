@@ -11,6 +11,9 @@
 ABSPATH=$(cd "$(dirname "$0")"; pwd)
 BASE_DIR="$ABSPATH/../"
 
+# Fixes issues
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
 
 echo "Deploying Progressio..."
 
