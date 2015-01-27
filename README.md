@@ -128,7 +128,7 @@ If, for any reason, you want a link not to be patched, add the `data-progressio-
 
 ### 4. Tag common dependencies (stylesheets + scripts)
 
-Progressio automatically process a diff of the page head dependencies while browsing.
+Progressio processes an automated diff of the page head dependencies while browsing.
 
 It automatically includes and load new CSS stylesheets and JS scripts. If your website has site-wide/common dependencies, you may want to add a tag to let Progressio know it shouldn't replace it.
 
