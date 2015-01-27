@@ -1,7 +1,7 @@
 Progressio
 ==========
 
-Progressio transforms your static website to a dynamic environment. Pages are loaded asynchronously, with the use of browser history JavaScript API and a beautiful overlay progress bar.
+Progressio transforms your static website to a dynamic environment. Pages are loaded asynchronously, with the use of the browser history JavaScript API and a beautiful overlay progress bar.
 
 This library was originally built for [Waaave](https://waaave.com/) - you can test it live there.
 
