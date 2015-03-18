@@ -22,7 +22,7 @@
   },
 
   "scripts": {
-    "test": "npm install; grunt test"
+    "test": "npm install; bundle install --without deployment; grunt test"
   },
 
   "devDependencies": {
