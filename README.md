@@ -12,11 +12,11 @@ Progressio is published under the terms of the Mozilla Public License v2.0 (MPL 
 [![build status](https://ci.hakuma.holdings/projects/57/status.png?ref=master)](https://ci.hakuma.holdings/projects/57?ref=master)
 
 
-## Demo
+## Testing Progressio
 
-You can test our [online demo of Progressio there](https://demo.hakuma.holdings/valerian.saliou/progressio/examples/simple_1.html).
+You can test Progressio by opening page: `./examples/simple_1.html`.
 
-_This online demo is the replica of what you can find in the ./examples folder._
+**Note: You first need to build Progressio, please refer to the Installation Notes section of this document.**
 
 
 ## Installation Notes
