@@ -1,15 +1,13 @@
 Progressio
 ==========
 
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/valeriansaliou/progressio?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://travis-ci.org/valeriansaliou/progressio.svg?branch=master)](https://travis-ci.org/valeriansaliou/progressio) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/valeriansaliou/progressio?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Progressio transforms your static website to a dynamic environment. Pages are loaded asynchronously, with the use of the browser history JavaScript API and a beautiful overlay progress bar.
 
 This library was originally built for [Waaave](https://waaave.com/) - you can test it live there.
 
 Progressio is published under the terms of the Mozilla Public License v2.0 (MPL v2.0) license - see the LICENSE.md file.
-
-[![Build Status](https://travis-ci.org/valeriansaliou/progressio.svg?branch=master)](https://travis-ci.org/valeriansaliou/progressio)
 
 
 ## Testing Progressio
