@@ -104,7 +104,7 @@ module.exports = function(grunt) {
     ENV_PATHS.libraries + '/jquery/jquery.js',
     ENV_PATHS.libraries + '/jquery.timers/jquery.timers.js',
     ENV_PATHS.libraries + '/jquery.hasparent/jquery.hasparent.js',
-    ENV_PATHS.libraries + '/jquery.ui/dist/jquery-ui.js',
+    ENV_PATHS.libraries + '/jquery.ui/ui/effect.js',
     ENV_PATHS.libraries + '/lazyload/lazyload.js',
     ENV_PATHS.libraries + '/console/console.js',
   ];

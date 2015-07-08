@@ -10,13 +10,23 @@
 
 var PROGRESSIO_INSTANCE;
 
-// Launch Progressio
-$(document).ready(function() {
+
+var fn_change_event = function() {
   var color_select_sel = $('select[name="progressio_color"]');
 
+  color_select_sel.change(function() {
+    PROGRESSIO_INSTANCE.color(
+      color_select_sel.val()
+    );
+  });
+};
+
+
+// Launch Progressio
+$(document).ready(function() {
   // Apply Progressio
   PROGRESSIO_INSTANCE = (new Progressio({
-    color: color_select_sel.val(),
+    color: $('select[name="progressio_color"]').val(),
 
     fixed: true,
     location: 'top',
@@ -42,9 +52,10 @@ $(document).ready(function() {
   PROGRESSIO_INSTANCE.apply();
 
   // Change Progressio bar color
-  color_select_sel.change(function() {
-    PROGRESSIO_INSTANCE.color(
-      color_select_sel.val()
-    );
-  });
+  fn_change_event();
+
+  // Register change event restore
+  PROGRESSIO_INSTANCE.register_event(
+    "simple:fn_change_event", fn_change_event, this, true
+  );
 });

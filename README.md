@@ -24,6 +24,7 @@ You can test Progressio by opening page: `./examples/simple_1.html`.
 Progressio depends on the following libraries:
 
 * [jQuery](https://github.com/jquery/jquery)
+* [jQuery UI Effects](https://github.com/jquery/jquery-ui/blob/master/ui/effect.js)
 * [jQuery Timers](https://github.com/patryk/jquery.timers)
 * [jQuery hasParent](https://github.com/valeriansaliou/jquery.hasparent)
 * [LazyLoad](https://github.com/rgrove/lazyload/)
