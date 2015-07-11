@@ -21,7 +21,6 @@ module.exports = function(grunt) {
   var GRUNT_TASKS = ['build', 'test', 'lint'];
 
   var GRUNT_TASKS_BUILD_COMMON = [
-    'shell',
     'coffee',
     'compass',
     'concat',
@@ -101,12 +100,12 @@ module.exports = function(grunt) {
   var GRUNT_DEPENDENCY_FILES = [];
 
   var GRUNT_LIBRARY_FILES = [
-    ENV_PATHS.libraries + '/jquery/jquery.js',
-    ENV_PATHS.libraries + '/jquery.timers/jquery.timers.js',
-    ENV_PATHS.libraries + '/jquery.hasparent/jquery.hasparent.js',
-    ENV_PATHS.libraries + '/jquery.ui/ui/effect.js',
-    ENV_PATHS.libraries + '/lazyload/lazyload.js',
-    ENV_PATHS.libraries + '/console/console.js',
+    ENV_PATHS.libraries + '/jquery/index.js',
+    ENV_PATHS.libraries + '/jquery.timers/index.js',
+    ENV_PATHS.libraries + '/jquery.hasparent/index.js',
+    ENV_PATHS.libraries + '/jquery.ui-effect/index.js',
+    ENV_PATHS.libraries + '/lazyload/index.js',
+    ENV_PATHS.libraries + '/console/index.js',
   ];
 
   var GRUNT_LIBRARY_PREPROCESSED_FILES = [
@@ -517,18 +516,6 @@ module.exports = function(grunt) {
     },
 
 
-    // Task: Shell
-    shell: {
-      make_jqueryui: {
-        options: {
-          stderr: false
-        },
-
-        command: ('cd ' + ENV_PATHS.libraries + '/jquery.ui && npm install && grunt concat')
-      }
-    },
-
-
     // Task: Banner
     usebanner: {
       dev_javascripts_uncompressed: {
@@ -616,7 +603,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-banner');
-  grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-uglify');
 

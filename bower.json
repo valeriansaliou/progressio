@@ -2,12 +2,12 @@
   "name" : "progressio",
 
   "dependencies" : {
-    "jquery": "latest",
-    "jquery.timers": "patryk/jquery.timers",
-    "jquery.hasparent": "valeriansaliou/jquery.hasparent",
-    "jquery.ui": "latest",
-    "lazyload": "rgrove/lazyload",
-    "console": "valeriansaliou/console.js"
+    "jquery": "http://code.jquery.com/jquery-2.1.4.js",
+    "jquery.timers": "https://raw.githubusercontent.com/patryk/jquery.timers/3d21ef5c71579cff5d71914458ee6717b7c31a1c/jquery.timers.js",
+    "jquery.hasparent": "https://raw.githubusercontent.com/valeriansaliou/jquery.hasparent/c4fb344f5f07f3a321313c325fcda219fe9b4253/jquery.hasparent.js",
+    "jquery.ui-effect": "https://raw.githubusercontent.com/jquery/jquery-ui/f7ee8524b3371663b2484299036c5e14363d5b71/ui/effect.js",
+    "lazyload": "https://raw.githubusercontent.com/rgrove/lazyload/df0c1c32096ff247de931dd1bf53d8a014636d7f/lazyload.js",
+    "console": "https://raw.githubusercontent.com/valeriansaliou/console.js/3b3cb748550c052424bc963c6ee7465c3e2117cd/console.js"
   },
 
   "install" : {
