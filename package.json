@@ -1,7 +1,7 @@
 {
   "name": "progressio",
   "description": "Beautiful & stylish asynchronous page loader. Makes a static website dynamic in a breeze.",
-  "version": "0.3.3",
+  "version": "1.0.0",
   "homepage": "https://github.com/valeriansaliou/progressio",
   "license": "MPL-2.0",
 

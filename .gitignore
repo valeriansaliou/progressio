@@ -11,5 +11,3 @@ node_modules/
 
 # Excluded subfiles
 tmp/*
-lib/*
-build/*

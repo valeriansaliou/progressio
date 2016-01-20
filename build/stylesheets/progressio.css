@@ -1,0 +1,112 @@
+/**
+ * progressio [uncompressed]
+ * @fileoverview Beautiful & stylish asynchronous page loader. Makes a static website dynamic in a breeze.
+ * 
+ * @version 1.0.0
+ * @date 2016-01-20
+ * @author Valérian Saliou https://valeriansaliou.name/
+ * @license MPL-2.0
+ * 
+ * @url https://github.com/valeriansaliou/progressio
+ * @repository git+https://github.com/valeriansaliou/progressio.git
+*/
+
+/* line 17, ../../src/stylesheets/progressio.sass */
+.progressio-container {
+  height: 2px;
+  background: #dbe0de;
+}
+/* line 21, ../../src/stylesheets/progressio.sass */
+.progressio-container .progressio-bar {
+  position: relative;
+  height: 0;
+  border-top: 1px solid #00a7f8;
+  border-bottom: 1px solid #225b9d;
+  z-index: 999999999;
+  -moz-box-shadow: 0 0 0 0;
+  -webkit-box-shadow: 0 0 0 0;
+  box-shadow: 0 0 0 0;
+  -moz-transition-property: box-shadow;
+  -o-transition-property: box-shadow;
+  -webkit-transition-property: box-shadow;
+  transition-property: box-shadow;
+  -moz-transition-delay: 350ms;
+  -o-transition-delay: 350ms;
+  -webkit-transition-delay: 350ms;
+  transition-delay: 350ms;
+}
+/* line 31, ../../src/stylesheets/progressio.sass */
+.progressio-container.progressio-visibility-hide {
+  display: none;
+}
+/* line 34, ../../src/stylesheets/progressio.sass */
+.progressio-container.progressio-visibility-show {
+  display: block;
+}
+/* line 37, ../../src/stylesheets/progressio.sass */
+.progressio-container.progressio-position-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999999999;
+}
+/* line 44, ../../src/stylesheets/progressio.sass */
+.progressio-container.progressio-position-fixed.progressio-location-bottom {
+  top: auto;
+  bottom: 0;
+}
+/* line 48, ../../src/stylesheets/progressio.sass */
+.progressio-container.progressio-color-red {
+  background: #dbe0de;
+}
+/* line 51, ../../src/stylesheets/progressio.sass */
+.progressio-container.progressio-color-red .progressio-bar {
+  border-top-color: #f81700;
+  border-bottom-color: #9d0700;
+}
+/* line 55, ../../src/stylesheets/progressio.sass */
+.progressio-container.progressio-color-green {
+  background: #dbe0de;
+}
+/* line 58, ../../src/stylesheets/progressio.sass */
+.progressio-container.progressio-color-green .progressio-bar {
+  border-top-color: #00f82e;
+  border-bottom-color: #009d1b;
+}
+/* line 62, ../../src/stylesheets/progressio.sass */
+.progressio-container.progressio-color-yellow {
+  background: #dbe0de;
+}
+/* line 65, ../../src/stylesheets/progressio.sass */
+.progressio-container.progressio-color-yellow .progressio-bar {
+  border-top-color: #f8e200;
+  border-bottom-color: #9d9000;
+}
+/* line 69, ../../src/stylesheets/progressio.sass */
+.progressio-container.progressio-color-orange {
+  background: #dbe0de;
+}
+/* line 72, ../../src/stylesheets/progressio.sass */
+.progressio-container.progressio-color-orange .progressio-bar {
+  border-top-color: #f89b00;
+  border-bottom-color: #9d6500;
+}
+/* line 76, ../../src/stylesheets/progressio.sass */
+.progressio-container.progressio-color-black {
+  background: #dbe0de;
+}
+/* line 79, ../../src/stylesheets/progressio.sass */
+.progressio-container.progressio-color-black .progressio-bar {
+  border-top-color: #31302d;
+  border-bottom-color: #000000;
+}
+/* line 83, ../../src/stylesheets/progressio.sass */
+.progressio-container.progressio-color-purple {
+  background: #dbe0de;
+}
+/* line 86, ../../src/stylesheets/progressio.sass */
+.progressio-container.progressio-color-purple .progressio-bar {
+  border-top-color: #c200f8;
+  border-bottom-color: #80009d;
+}
