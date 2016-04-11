@@ -43,7 +43,7 @@ Once done, you can retrieve the progressio.js and progressio.css files in the bu
 
 ## Usage
 
-Using Progressio is straightforward. Here's how to use it.
+Using Progressio is straightforward. Find out how to use it below.
 
 ### 1. Include library files
 
