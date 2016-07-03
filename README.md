@@ -5,7 +5,7 @@ Progressio
 
 Progressio transforms your static website to a dynamic environment. Pages are loaded asynchronously, with the use of the browser history JavaScript API and a beautiful overlay progress bar.
 
-This library was originally built for [Waaave](https://waaave.com/) - you can test it live there.
+This library was originally built for [Waaave](https://github.com/waaave/waaave-web) - you can test it live there.
 
 Progressio is published under the terms of the Mozilla Public License v2.0 (MPL v2.0) license - see the LICENSE.md file.
 
