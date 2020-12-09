@@ -1,7 +1,0 @@
-node_js:
-  - '0.10'
-before_script:
-  - 'gem update --system'
-  - 'gem install compass oily_png'
-  - 'npm install -g bower grunt-cli'
-script: "npm test"
